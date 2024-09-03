@@ -5,6 +5,7 @@ import Redirect from "@/components/redirect";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import textExtensions from "text-extensions";
+import sizeOf from "image-size";
 
 const imageExtensions = ["png", "jpg", "jpeg", "gif", "webp", "svg"];
 
@@ -21,15 +22,18 @@ export default async function Upload({ params }: { params: { slug: string } }) {
         "utf8",
       );
 
-      return file;
+      return {
+        file,
+        filePath: path.join(process.cwd(), "uploads", params.slug),
+      };
     } catch (error) {
       console.log(error);
 
-      return undefined;
+      return { file: undefined, filePath: undefined };
     }
   }
 
-  const file = await getFile();
+  const { file, filePath } = await getFile();
 
   if (file === undefined) {
     return <ErrorPage message="404: File not found" />;
@@ -57,6 +61,9 @@ export default async function Upload({ params }: { params: { slug: string } }) {
       </body>
     );
   } else if (imageExtensions.includes(params.slug.split(".").pop()!)) {
+    const dimensions = sizeOf(filePath);
+    const { width, height } = dimensions;
+
     return (
       <html>
         <head>
@@ -66,6 +73,8 @@ export default async function Upload({ params }: { params: { slug: string } }) {
             content={process.env.NEXT_PUBLIC_URL + "/get/" + params.slug}
           />
           <meta property="og:type" content="image" />
+          <meta property="og:image:width" content={width?.toString()} />
+          <meta property="og:image:height" content={height?.toString()} />
           <meta name="viewport" content="width=device-width" />
         </head>
         <body>
@@ -74,8 +83,8 @@ export default async function Upload({ params }: { params: { slug: string } }) {
               src={"/get/" + params.slug}
               alt="image"
               layout="responsive"
-              width={100}
-              height={100}
+              width={width || 100}
+              height={height || 100}
               style={{ maxWidth: "100%", height: "auto" }}
             />
           </div>

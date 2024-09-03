@@ -14,6 +14,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "bcryptjs": "^2.4.3",
     "formidable": "^3.5.1",
+    "image-size": "^1.1.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.0",
     "multiparty": "^4.2.3",
