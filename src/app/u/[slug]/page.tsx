@@ -83,6 +83,11 @@ export default async function Upload({ params }: { params: { slug: string } }) {
           <meta property="og:type" content="image" />
           <meta property="og:image:width" content={width?.toString()} />
           <meta property="og:image:height" content={height?.toString()} />
+          <meta property="twitter:card" content="summary_large_image" />
+          <meta
+            property="twitter:image"
+            content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
+          />
           <meta name="viewport" content="width=device-width" />
         </head>
         <body>
