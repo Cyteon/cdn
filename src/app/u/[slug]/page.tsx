@@ -70,7 +70,15 @@ export default async function Upload({ params }: { params: { slug: string } }) {
           <meta
             property="og:image"
             itemProp="image"
-            content={process.env.NEXT_PUBLIC_URL + "/get/" + params.slug}
+            content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
+          />
+          <meta
+            property="og:url"
+            content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
+          />
+          <meta
+            property="og:image:secure_url"
+            content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
           />
           <meta property="og:type" content="image" />
           <meta property="og:image:width" content={width?.toString()} />
@@ -80,7 +88,7 @@ export default async function Upload({ params }: { params: { slug: string } }) {
         <body>
           <div className="flex justify-center items-center h-screen w-full bg-black">
             <Image
-              src={"/get/" + params.slug}
+              src={"/r/" + params.slug}
               alt="image"
               layout="responsive"
               width={width || 100}
@@ -92,6 +100,6 @@ export default async function Upload({ params }: { params: { slug: string } }) {
       </html>
     );
   } else {
-    return <Redirect location={"/get/" + params.slug} />;
+    return <Redirect location={"/r/" + params.slug} />;
   }
 }
