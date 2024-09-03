@@ -64,18 +64,19 @@ export default async function Upload({ params }: { params: { slug: string } }) {
             property="og:image"
             content={process.env.NEXT_PUBLIC_URL + "/get/" + params.slug}
           />
-          <meta property="og:type" content="website" />
           <meta name="viewport" content="width=device-width" />
         </head>
-        <body className="bg-black">
-          <Image
-            src={"/get/" + params.slug}
-            alt="image"
-            width={0}
-            height={0}
-            sizes="100vw"
-            style={{ width: "auto", height: "auto" }}
-          />
+        <body>
+          <div className="flex justify-center items-center h-screen w-full bg-black">
+            <Image
+              src={"/get/" + params.slug}
+              alt="image"
+              layout="responsive"
+              width={100}
+              height={100}
+              style={{ maxWidth: "80%", height: "auto" }}
+            />
+          </div>
         </body>
       </html>
     );
