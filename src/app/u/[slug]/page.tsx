@@ -58,14 +58,22 @@ export default async function Upload({ params }: { params: { slug: string } }) {
     );
   } else if (imageExtensions.includes(params.slug.split(".").pop()!)) {
     return (
-      <Image
-        src={"/get/" + params.slug}
-        alt="image"
-        width={0}
-        height={0}
-        sizes="100vw"
-        style={{ width: "auto", height: "auto" }}
-      />
+      <html>
+        <head>
+          <meta
+            property="og:image"
+            content={process.env.NEXT_PUBLIC_URL + "/get/" + params.slug}
+          />
+        </head>
+        <Image
+          src={"/get/" + params.slug}
+          alt="image"
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{ width: "auto", height: "auto" }}
+        />
+      </html>
     );
   } else {
     return <Redirect location={"/get/" + params.slug} />;
