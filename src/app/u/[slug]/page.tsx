@@ -74,7 +74,7 @@ export default async function Upload({ params }: { params: { slug: string } }) {
               layout="responsive"
               width={100}
               height={100}
-              style={{ maxWidth: "80%", height: "auto" }}
+              style={{ maxWidth: "100%", height: "auto" }}
             />
           </div>
         </body>
