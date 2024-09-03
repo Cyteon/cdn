@@ -62,8 +62,10 @@ export default async function Upload({ params }: { params: { slug: string } }) {
         <head>
           <meta
             property="og:image"
+            itemProp="image"
             content={process.env.NEXT_PUBLIC_URL + "/get/" + params.slug}
           />
+          <meta property="og:type" content="image" />
           <meta name="viewport" content="width=device-width" />
         </head>
         <body>
