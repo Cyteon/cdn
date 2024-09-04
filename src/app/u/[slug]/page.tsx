@@ -103,22 +103,6 @@ export default async function Upload({ params }: { params: { slug: string } }) {
     return (
       <html>
         <head>
-          <meta
-            property="og:video"
-            content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
-          />
-          <meta
-            property="og:url"
-            content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
-          />
-          <meta
-            property="og:secure_url"
-            content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
-          />
-          <meta property="og:type" content="video" />
-          <meta property="og:video:width" content="1280" />
-          <meta property="og:video:height" content="720" />
-
           <meta property="twitter:card" content="player" />
           <meta
             property="twitter:player"
@@ -132,6 +116,23 @@ export default async function Upload({ params }: { params: { slug: string } }) {
             property="twitter:player:stream:content_type"
             content="video/mp4"
           />
+
+          <meta
+            property="og:video"
+            content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
+          />
+          <meta
+            property="og:url"
+            content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
+          />
+          <meta
+            property="og:secure_url"
+            content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
+          />
+          <meta property="og:type" content="video.other" />
+          <meta property="og:video:width" content="1280" />
+          <meta property="og:video:height" content="720" />
+          <meta property="og:video:type" content="video/mp4" />
 
           <meta name="viewport" content="width=device-width" />
         </head>
