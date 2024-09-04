@@ -24,6 +24,7 @@
     "react-dom": "^18",
     "sweetalert2": "^11.13.1",
     "text-extensions": "^3.0.0",
+    "typeid-ts": "^0.3.8",
     "typescript-cookie": "^1.0.6"
   },
   "devDependencies": {

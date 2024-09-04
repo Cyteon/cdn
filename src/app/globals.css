@@ -14,6 +14,10 @@
     @apply bg-ctp-blue text-ctp-crust;
 }
 
+.swal2-cancel {
+    @apply bg-ctp-surface1 text-ctp-text;
+}
+
 .swal2-success-circular-line-left .swal2-success-circular-line-right {
     @apply bg-ctp-base;
 }
