@@ -46,10 +46,11 @@ export default function App() {
         text: body.message,
         icon: "success",
         background: "#363a4f",
-        cancelButtonText: "Copy URL",
+        confirmButtonText: "Copy URL",
+        cancelButtonText: "OK",
         showCancelButton: true,
       }).then((result) => {
-        if (result.isDismissed) {
+        if (result.isConfirmed) {
           navigator.clipboard.writeText(body.url);
 
           Swal.fire({
