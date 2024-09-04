@@ -1,5 +1,10 @@
 "use client";
 
+import Redirect from "@/components/redirect"
+import Loading from "@/components/loading"
+
 export default function Home() {
-  return <main>An CDN</main>;
+  return (
+    <Redirect location="/app" />
+  );
 }

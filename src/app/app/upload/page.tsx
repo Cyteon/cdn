@@ -4,6 +4,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { Cookies } from "typescript-cookie";
+
+import Loading from "@/components/loading";
 import NavBar from "@/components/navbar";
 import SideBar from "@/components/sidebar";
 
@@ -48,7 +50,11 @@ export default function App() {
   };
 
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return (
+      <body className="bg-ctp-base w-full h-screen min-h-screen flex items-center justify-center">
+        <Loading />
+      </body>
+    )
   } else if (status === "authenticated") {
     return (
       <body className="bg-ctp-base w-full h-screen text-ctp-text min-h-screen flex flex-col">
