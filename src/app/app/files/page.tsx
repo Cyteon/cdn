@@ -67,7 +67,7 @@ export default function Files() {
               {images.map((file, index) => (
                 <div key={index} className="flex-shrink-1">
                   <Image
-                    src={process.env.NEXT_PUBLIC_URL + "/r/" + file.id}
+                    src={"/r/" + file.id}
                     alt={file.fileName}
                     layout="intrinsic"
                     width={256}

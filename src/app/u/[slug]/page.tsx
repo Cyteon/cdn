@@ -128,6 +128,10 @@ export default async function Upload({ params }: { params: { slug: string } }) {
             property="twitter:player:stream"
             content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
           />
+          <meta
+            property="twitter:player:stream:content_type"
+            content="video/mp4"
+          />
 
           <meta name="viewport" content="width=device-width" />
         </head>
