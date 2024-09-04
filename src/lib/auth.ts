@@ -27,13 +27,14 @@ export const authOptions: NextAuthOptions = {
         if (!passwordMatch) throw new Error("Invalid Password");
 
         const customToken = jwt.sign(
-          { id: user._id, username: user.username },
+          { id: user.id, username: user.username, admin: user.admin },
           process.env.AUTH_SECRET!,
           { expiresIn: "28d" },
         );
 
         return {
-          id: user._id,
+          id: user.id,
+          admin: user.admin,
           username: user.username,
           customToken: customToken,
         };
@@ -47,6 +48,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.admin = user.admin;
         token.username = user.username;
         token.customToken = user.customToken;
       }
@@ -55,6 +57,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       session.user = {
         id: token.id,
+        admin: token.admin,
         username: token.username,
         customToken: token.customToken,
       };

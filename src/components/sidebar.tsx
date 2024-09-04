@@ -10,6 +10,12 @@ export default function SideBar() {
         Home
       </a>
       <a
+        href="/app/files"
+        className="px-5 py-2 transition-all duration-300 hover:bg-ctp-surface0 rounded-md w-full text-start"
+      >
+        Files
+      </a>
+      <a
         href="/app/upload"
         className="px-5 py-2 transition-all duration-300 hover:bg-ctp-surface0 rounded-md w-full text-start"
       >

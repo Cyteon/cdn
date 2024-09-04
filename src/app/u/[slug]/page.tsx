@@ -6,8 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import textExtensions from "text-extensions";
 import sizeOf from "image-size";
-
-const imageExtensions = ["png", "jpg", "jpeg", "gif", "webp", "svg"];
+import { imageExtensions } from "@/lib/extensions";
 
 export default async function Upload({ params }: { params: { slug: string } }) {
   async function getFile() {

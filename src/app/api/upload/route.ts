@@ -8,7 +8,7 @@ import Image from "@/models/Image";
 
 const SECRET = process.env.AUTH_SECRET!;
 
-async function handler(req: Request) {
+async function post(req: Request) {
   const authHeader =
     req.headers["authorization"] ||
     req.headers["Authorization"] ||
@@ -58,7 +58,7 @@ async function handler(req: Request) {
 
     const image = new Image({
       fileName: file?.name,
-      owner: user.username,
+      owner: user.id,
       id: fileName,
     });
 
@@ -97,4 +97,4 @@ async function handler(req: Request) {
   );
 }
 
-export { handler as POST };
+export { post as POST };

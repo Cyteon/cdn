@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/mongodb";
 const { DISABLE_REGISTER } = process.env;
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import { typeid } from "typeid-ts";
 
 export const register = async (values: any) => {
   const { username, password } = values;
@@ -29,6 +30,7 @@ export const register = async (values: any) => {
 
     const user = new User({
       username,
+      id: typeid("user"),
       password: hashedPassword,
     });
 
