@@ -146,6 +146,7 @@ export default async function Upload({ params }: { params: { slug: string } }) {
               controls
               className="max-w-full max-h-full"
               src={"/r/" + params.slug}
+              autoPlay
             />
           </div>
         </body>
@@ -169,26 +170,29 @@ export default async function Upload({ params }: { params: { slug: string } }) {
         />
         <meta name="twitter:player:width" content="720" />
         <meta name="twitter:player:height" content="480" />
+        <meta property="og:type" content="music.song" />
         <meta
-          property="og:audio"
+          property="og:url"
           content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
         />
         <meta
-          property="og:url"
+          property="og:audio"
           content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
         />
         <meta
           property="og:secure_url"
           content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
         />
-        <meta property="og:type" content="music.song" />
         <meta property="og:audio:type" content="audio/mp3" />
       </head>
       <body>
         <div className="flex justify-center items-center h-screen w-full bg-black">
-          <audio controls className="max-w-full max-h-full">
-            <source src={"/r/" + params.slug} type="audio/mp3" />
-          </audio>
+          <audio
+            src={"/r/" + params.slug}
+            controls
+            autoPlay
+            className="max-w-full max-h-full"
+          />
         </div>
       </body>
     </html>;
