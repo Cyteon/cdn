@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { UserDocument } from "@/models/User";
 
 export default function SideBar() {
   const { data: session } = useSession();
@@ -53,7 +54,7 @@ export default function SideBar() {
       >
         Upload
       </a>
-      {session?.user?.admin && (
+      {(session?.user as UserDocument).admin && (
         <div className="w-full flex flex-col">
           <hr className="mt-2 border-ctp-surface1" />
           <p className="text-sm text-ctp-subtext0">Administration:</p>

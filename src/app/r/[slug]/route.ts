@@ -2,7 +2,10 @@
 import fs from "fs";
 import path from "path";
 
-export async function GET(req, { params }: { params: { slug: string } }) {
+export async function GET(
+  req: Request,
+  { params }: { params: { slug: string } },
+) {
   const slug = params.slug;
 
   if (!slug) {

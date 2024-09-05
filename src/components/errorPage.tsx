@@ -1,4 +1,10 @@
-const ErrorPage = ({ message }) => {
+import React from "react";
+
+interface ErrorPageProps {
+  message: string;
+}
+
+const ErrorPage: React.FC<ErrorPageProps> = ({ message }) => {
   return (
     <body>
       <div className="flex justify-center h-screen bg-ctp-base">

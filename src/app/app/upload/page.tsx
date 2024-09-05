@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
@@ -10,6 +10,7 @@ import Loading from "@/components/loading";
 import NavBar from "@/components/navbar";
 import SideBar from "@/components/sidebar";
 import axios from "axios";
+import { UserDocument } from "@/models/User";
 
 export default function App() {
   const { status, data: session } = useSession();
@@ -20,7 +21,7 @@ export default function App() {
 
   console.log(session);
 
-  const uploadFile = async (e) => {
+  const uploadFile = async (e: any) => {
     e.preventDefault();
 
     const btn = e.target.querySelector("button");
@@ -39,7 +40,7 @@ export default function App() {
 
       const res = await axios.post("/api/upload", formData, {
         headers: {
-          authorization: `Bearer ${session?.user?.customToken}`,
+          authorization: `Bearer ${(session?.user as { customToken: string }).customToken}`,
           "Content-Type": "multipart/form-data",
         },
         onUploadProgress: (progressEvent) => {
@@ -105,7 +106,7 @@ export default function App() {
           background: "#363a4f",
         });
       }
-    } catch (err) {
+    } catch (err: any) {
       Swal.fire({
         title: "Error",
         text: err.message,

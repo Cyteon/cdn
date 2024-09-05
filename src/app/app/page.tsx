@@ -6,6 +6,8 @@ import Loading from "@/components/loading";
 import NavBar from "@/components/navbar";
 import SideBar from "@/components/sidebar";
 
+import { UserDocument } from "@/models/User";
+
 export default function App() {
   const { status, data: session } = useSession();
 
@@ -27,7 +29,7 @@ export default function App() {
           <SideBar />
           <aside className="m-4 bg-ctp-mantle p-5 w-full rounded-md border-[1px] border-ctp-surface0">
             <h1 className="text-2xl font-bold">
-              Hi, {session?.user?.username}
+              Hi, {(session?.user as UserDocument).username}
             </h1>
           </aside>
         </div>

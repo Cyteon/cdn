@@ -1,5 +1,5 @@
 import { connectDB } from "@/lib/mongodb";
-import User from "@/models/User";
+import User, { UserDocument } from "@/models/User";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
@@ -47,10 +47,17 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.admin = user.admin;
-        token.username = user.username;
-        token.customToken = user.customToken;
+        var usr = user as {
+          id: string;
+          admin: boolean;
+          username: string;
+          customToken: string;
+        };
+
+        token.id = usr.id;
+        token.admin = usr.admin;
+        token.username = usr.username;
+        token.customToken = usr.customToken;
       }
       return token;
     },

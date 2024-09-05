@@ -24,18 +24,26 @@ export default function Files() {
     imageExtensions.includes(ext);
   });
 
-  var other = files.filter(
-    (file) => !imageExtensions.includes(file.id.split(".").pop()),
-  );
+  var other = files.filter((file) => {
+    var f = file as FileDocument;
+
+    var ext = f.id.split(".").pop() || "";
+
+    !imageExtensions.includes(ext);
+  });
 
   const router = useRouter();
 
   const getFiles = async () => {
+    var user = session?.user as {
+      customToken: string;
+    };
+
     const res = await fetch("/api/files", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        authorization: `Bearer ${session?.user?.customToken}`,
+        authorization: `Bearer ${user?.customToken}`,
       },
     });
 
@@ -47,7 +55,11 @@ export default function Files() {
   };
 
   useEffect(() => {
-    if (session?.user?.customToken) {
+    var user = session?.user as {
+      customToken: string;
+    };
+
+    if (user?.customToken) {
       console.log("getting files");
       getFiles();
     }
@@ -72,8 +84,8 @@ export default function Files() {
               {images.map((file, index) => (
                 <div key={index} className="flex-shrink-1">
                   <Image
-                    src={"/r/" + file.id}
-                    alt={file.fileName}
+                    src={"/r/" + (file as FileDocument).id}
+                    alt={(file as FileDocument).fileName}
                     layout="intrinsic"
                     width={256}
                     height={256}
@@ -84,12 +96,16 @@ export default function Files() {
               {other.map((file, index) => (
                 <a
                   key={index}
-                  href={process.env.NEXT_PUBLIC_URL + "/r/" + file.id}
+                  href={
+                    process.env.NEXT_PUBLIC_URL +
+                    "/u/" +
+                    (file as FileDocument).id
+                  }
                   target="_blank"
                   rel="noreferrer"
                   className="p-5 bg-ctp-surface0 rounded-md max-w-md size-fit flex-shrink-1"
                 >
-                  {file.fileName}
+                  {(file as FileDocument).fileName}
                 </a>
               ))}
             </div>
