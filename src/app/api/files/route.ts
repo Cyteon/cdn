@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 
 import { connectDB } from "@/lib/mongodb";
-import Image from "@/models/Image";
+import File from "@/models/File";
 
 const SECRET = process.env.AUTH_SECRET!;
 
@@ -36,7 +36,7 @@ async function get(req: Request) {
 
   await connectDB();
 
-  const images = await Image.find({ owner: user.id });
+  const images = await File.find({ owner: user.id });
 
   return new Response(JSON.stringify(images), {
     status: 200,

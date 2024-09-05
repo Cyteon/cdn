@@ -1,13 +1,13 @@
 import mongoose, { Schema, model } from "mongoose";
 
-export interface ImageDocument {
+export interface FileDocument {
   _id: string;
-  owner: string;
   id: string;
+  owner: string;
   fileName: string;
 }
 
-const ImageSchema = new Schema<ImageDocument>({
+const FileSchema = new Schema<FileDocument>({
   owner: {
     type: String,
     required: true,
@@ -22,7 +22,6 @@ const ImageSchema = new Schema<ImageDocument>({
   },
 });
 
-const Image =
-  mongoose.models?.image || model<ImageDocument>("image", ImageSchema);
+const File = mongoose.models?.file || model<FileDocument>("file", FileSchema);
 
-export default Image;
+export default File;

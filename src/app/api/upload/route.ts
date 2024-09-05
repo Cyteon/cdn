@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 
 import { connectDB } from "@/lib/mongodb";
-import Image from "@/models/Image";
+import File from "@/models/File";
 
 const SECRET = process.env.AUTH_SECRET!;
 
@@ -56,13 +56,13 @@ async function post(req: Request) {
   try {
     await connectDB();
 
-    const image = new Image({
+    const fileDoc = new File({
       fileName: file?.name,
       owner: user.id,
       id: fileName,
     });
 
-    await image.save();
+    await fileDoc.save();
   } catch (error) {
     console.error(error);
 

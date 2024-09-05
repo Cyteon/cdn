@@ -4,7 +4,7 @@ import { promisify } from "util";
 const fastFolderSize = require("fast-folder-size");
 
 import User from "@/models/User";
-import Image from "@/models/Image";
+import File from "@/models/File";
 
 const fastFolderSizeAsync = promisify(fastFolderSize);
 
@@ -18,7 +18,7 @@ async function get(req: Request) {
     users = count;
   });
 
-  await Image.countDocuments().then((count) => {
+  await File.countDocuments().then((count) => {
     files = count;
   });
 
