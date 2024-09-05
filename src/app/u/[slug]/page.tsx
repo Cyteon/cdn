@@ -6,7 +6,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import textExtensions from "text-extensions";
 import sizeOf from "image-size";
-import { imageExtensions, videoExtensions } from "@/lib/extensions";
+import {
+  audioExtensions,
+  imageExtensions,
+  videoExtensions,
+} from "@/lib/extensions";
 
 export default async function Upload({ params }: { params: { slug: string } }) {
   async function getFile() {
@@ -147,6 +151,45 @@ export default async function Upload({ params }: { params: { slug: string } }) {
         </body>
       </html>
     );
+  } else if (audioExtensions.includes(params.slug.split(".").pop()!)) {
+    <html>
+      <head>
+        <meta property="twitter:card" content="player" />¨
+        <meta
+          property="twitter:player"
+          content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
+        />
+        <meta
+          property="twitter:player:stream"
+          content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
+        />
+        <meta
+          property="twitter:player:stream:content_type"
+          content="audio/mp3"
+        />
+        <meta
+          property="og:audio"
+          content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
+        />
+        <meta
+          property="og:url"
+          content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
+        />
+        <meta
+          property="og:secure_url"
+          content={process.env.NEXT_PUBLIC_URL + "/r/" + params.slug}
+        />
+        <meta property="og:type" content="music.song" />
+        <meta property="og:audio:type" content="audio/mp3" />
+      </head>
+      <body className="w-full h-screen">
+        <div className="flex justify-center items-center h-screen w-full bg-black">
+          <audio controls className="max-w-full max-h-full">
+            <source src={"/r/" + params.slug} type="audio/mp3" />
+          </audio>
+        </div>
+      </body>
+    </html>;
   } else {
     return <Redirect location={"/r/" + params.slug} />;
   }
