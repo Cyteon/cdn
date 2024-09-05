@@ -55,10 +55,16 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
+      await connectDB();
+
+      const user = await User.findOne({ id: token.id });
+
+      if (!user) return;
+
       session.user = {
         id: token.id,
-        admin: token.admin,
-        username: token.username,
+        admin: user.admin,
+        username: user.username,
         customToken: token.customToken,
       };
       return session;
