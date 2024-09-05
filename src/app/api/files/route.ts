@@ -9,10 +9,7 @@ import File from "@/models/File";
 const SECRET = process.env.AUTH_SECRET!;
 
 async function get(req: Request) {
-  const authHeader =
-    req.headers["authorization"] ||
-    req.headers["Authorization"] ||
-    (req.headers.get && req.headers.get("authorization"));
+  const authHeader = req.headers.get && req.headers.get("authorization");
 
   const token = authHeader?.split(" ")[1];
 
@@ -27,7 +24,12 @@ async function get(req: Request) {
   try {
     const decodedToken = jwt.verify(token, SECRET);
 
-    user = decodedToken;
+    user = decodedToken as {
+      id: string;
+      username: string;
+      admin: boolean;
+      customToken: string;
+    };
   } catch (error) {
     return new Response(JSON.stringify({ message: "Invalid token" }), {
       status: 401,

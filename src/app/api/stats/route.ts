@@ -14,13 +14,8 @@ async function get(req: Request) {
   var users: number;
   var files: number;
 
-  await User.countDocuments().then((count) => {
-    users = count;
-  });
-
-  await File.countDocuments().then((count) => {
-    files = count;
-  });
+  users = await User.countDocuments();
+  files = await File.countDocuments();
 
   let storageUsed: number;
   try {

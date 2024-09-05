@@ -7,6 +7,7 @@ import NavBar from "@/components/navbar";
 import SideBar from "@/components/sidebar";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { FileDocument } from "@/models/File";
 
 import { imageExtensions } from "@/lib/extensions";
 
@@ -15,9 +16,13 @@ export default function Files() {
 
   var [files, setFiles] = useState([]);
 
-  var images = files.filter((file) =>
-    imageExtensions.includes(file.id.split(".").pop()),
-  );
+  var images = files.filter((file) => {
+    var f = file as FileDocument;
+
+    var ext = f.id.split(".").pop() || "";
+
+    imageExtensions.includes(ext);
+  });
 
   var other = files.filter(
     (file) => !imageExtensions.includes(file.id.split(".").pop()),

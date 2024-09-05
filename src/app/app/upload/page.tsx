@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
@@ -8,11 +9,12 @@ import { Cookies } from "typescript-cookie";
 import Loading from "@/components/loading";
 import NavBar from "@/components/navbar";
 import SideBar from "@/components/sidebar";
+import axios from "axios";
 
 export default function App() {
   const { status, data: session } = useSession();
 
-  var upload_status = "ready";
+  var [uploading, setUploading] = useState(false);
 
   const router = useRouter();
 
@@ -24,54 +26,97 @@ export default function App() {
     const btn = e.target.querySelector("button");
     btn.disabled = true;
 
-    upload_status = "loading";
+    setUploading(true);
 
     const file = e.target.file?.files[0];
 
     const formData = new FormData(e.currentTarget);
+    formData.append("file", file);
 
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-      headers: {
-        authorization: `Bearer ${session?.user?.customToken}`,
-      },
-    });
+    try {
+      let startTime: number,
+        lastUploadedBytes = 0;
 
-    const body = await res.json();
+      const res = await axios.post("/api/upload", formData, {
+        headers: {
+          authorization: `Bearer ${session?.user?.customToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / (progressEvent.total || 0),
+          );
 
-    if (res.ok) {
-      Swal.fire({
-        title: "Uploaded",
-        text: body.message,
-        icon: "success",
-        background: "#363a4f",
-        confirmButtonText: "Copy URL",
-        cancelButtonText: "OK",
-        showCancelButton: true,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigator.clipboard.writeText(body.url);
+          const bar = e.target.querySelector("#progress-bar");
 
-          Swal.fire({
-            title: "Copied",
-            text: 'The URL "' + body.url + '" has been copied to your url',
-            icon: "success",
-            background: "#363a4f",
-          });
-        }
+          if (bar) {
+            bar.style.width = percentCompleted + "%";
+          }
+
+          const currentTime = Date.now();
+
+          if (!startTime) {
+            startTime = currentTime;
+          }
+
+          const uploadedBytes = progressEvent.loaded;
+          const totalBytes = progressEvent.total;
+
+          const timeElapsed = (currentTime - startTime) / 1000;
+
+          const bytesSinceLastProgress = uploadedBytes - lastUploadedBytes;
+          const uploadSpeedMbps =
+            (bytesSinceLastProgress * 8) / (timeElapsed * 1000000);
+
+          lastUploadedBytes = uploadedBytes;
+
+          btn.innerText = `${uploadSpeedMbps.toFixed(2)} MB/s`;
+        },
       });
-    } else {
+
+      const body = await res.data;
+
+      if (res.status === 200) {
+        Swal.fire({
+          title: "Uploaded",
+          text: body.message,
+          icon: "success",
+          background: "#363a4f",
+          confirmButtonText: "Copy URL",
+          cancelButtonText: "OK",
+          showCancelButton: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigator.clipboard.writeText(body.url);
+
+            Swal.fire({
+              title: "Copied",
+              text: 'The URL "' + body.url + '" has been copied to your url',
+              icon: "success",
+              background: "#363a4f",
+            });
+          }
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: body.message,
+          icon: "error",
+          background: "#363a4f",
+        });
+      }
+    } catch (err) {
       Swal.fire({
         title: "Error",
-        text: body.message,
+        text: err.message,
         icon: "error",
         background: "#363a4f",
       });
     }
 
     btn.disabled = false;
-    upload_status = "ready";
+    btn.innerText = "Upload";
+    setUploading(false);
   };
 
   if (status === "loading") {
@@ -101,8 +146,17 @@ export default function App() {
                 className="border-ctp-surface0 border-[1px] p-2 rounded-md my-2"
               />
               <button className="p-2 bg-ctp-blue text-ctp-crust rounded-md disabled:bg-ctp-overlay0 disabled:text-ctp-text">
-                {upload_status === "loading" ? "Uploading..." : "Upload"}
+                {uploading ? "Uploading..." : "Upload"}
               </button>
+              {uploading ? (
+                <div className="bg-ctp-surface1 h-3 rounded-xl mt-2 w-full">
+                  <div
+                    className="bg-ctp-green h-full rounded-xl"
+                    id="progress-bar"
+                    style={{ width: "10%" }}
+                  ></div>
+                </div>
+              ) : null}
             </form>
           </aside>
         </div>
