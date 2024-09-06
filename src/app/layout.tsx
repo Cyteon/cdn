@@ -14,10 +14,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <script src="./node_modules/lodash/lodash.min.js" async />
-        <script src="./node_modules/dropzone/dist/dropzone-min.js" async />
-      </head>
       <Provider>
         <body className={inter.className}>{children}</body>
       </Provider>
