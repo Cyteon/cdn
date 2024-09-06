@@ -26,6 +26,18 @@ export const register = async (values: any) => {
       };
     }
 
+    if (!username || !password) {
+      return {
+        error: "Username and password are required",
+      };
+    }
+
+    if (password.length < 6) {
+      return {
+        error: "Password must be at least 6 characters",
+      };
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({

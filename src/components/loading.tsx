@@ -1,9 +1,13 @@
-export default function Loading() {
+interface LoadingProps {
+  className?: string;
+}
+
+export default function Loading({ className }: LoadingProps) {
   return (
     <div role="status">
       <svg
         aria-hidden="true"
-        className="w-32 h-32 text-ctp-surface0 animate-spin fill-ctp-blue"
+        className={"text-ctp-surface0 animate-spin " + className}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

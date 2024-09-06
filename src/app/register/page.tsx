@@ -4,13 +4,18 @@ import { FormEvent, useState, useRef } from "react";
 import { register } from "@/actions/register";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Loading from "@/components/loading";
 
 export default function Register() {
   const [error, setError] = useState("");
   const router = useRouter();
   const ref = useRef<HTMLFormElement>(null);
 
+  var [loading, setLoading] = useState(false);
+
   const handleSubmit = async (formData: FormData) => {
+    setLoading(true);
+
     const r = await register({
       password: formData.get("password"),
       username: formData.get("username"),
@@ -20,6 +25,8 @@ export default function Register() {
 
     if (r?.error) {
       setError(r.error);
+
+      setLoading(false);
       return;
     } else {
       return router.push("/login");
@@ -54,7 +61,11 @@ export default function Register() {
           type="submit"
           className="w-full p-2 bg-ctp-blue text-ctp-crust rounded-lg"
         >
-          Register
+          {loading ? (
+            <Loading className="w-8 h-8 mx-auto fill-ctp-green" />
+          ) : (
+            "Register"
+          )}
         </button>
 
         <p className="text-sm text-ctp-subtext0 my-1">

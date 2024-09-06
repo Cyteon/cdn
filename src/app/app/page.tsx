@@ -17,7 +17,7 @@ export default function App() {
     return (
       <body>
         <div className="bg-ctp-base w-full h-screen flex items-center justify-center">
-          <Loading />
+          <Loading className="w-32 h-32 fill-ctp-blue" />
         </div>
       </body>
     );

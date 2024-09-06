@@ -1,16 +1,15 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-import { Cookies } from "typescript-cookie";
 
 import Loading from "@/components/loading";
 import NavBar from "@/components/navbar";
 import SideBar from "@/components/sidebar";
 import axios from "axios";
-import { UserDocument } from "@/models/User";
+import Upload from "./components/upload";
 
 export default function App() {
   const { status, data: session } = useSession();
@@ -117,6 +116,7 @@ export default function App() {
 
     btn.disabled = false;
     btn.innerText = "Upload";
+
     setUploading(false);
   };
 
@@ -124,7 +124,7 @@ export default function App() {
     return (
       <body>
         <div className="bg-ctp-base w-full h-screen flex items-center justify-center">
-          <Loading />
+          <Loading className="w-32 h-32 fill-ctp-blue" />
         </div>
       </body>
     );
@@ -138,14 +138,10 @@ export default function App() {
             <h1 className="text-2xl font-bold">Upload</h1>
             <form
               className="flex-col flex w-fit file:bg-ctp-surface0 file:text-ctp-text"
+              id="uploadFile"
               onSubmit={uploadFile}
             >
-              <input
-                type="file"
-                name="file"
-                id="file"
-                className="border-ctp-surface0 border-[1px] p-2 rounded-md my-2"
-              />
+              <Upload />
               <button className="p-2 bg-ctp-blue text-ctp-crust rounded-md disabled:bg-ctp-overlay0 disabled:text-ctp-text">
                 {uploading ? "Uploading..." : "Upload"}
               </button>

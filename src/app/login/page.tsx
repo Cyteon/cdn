@@ -4,12 +4,17 @@ import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Loading from "@/components/loading";
 
 export default function Login() {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  var [loading, setLoading] = useState(false);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    setLoading(true);
+
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -25,6 +30,8 @@ export default function Login() {
     } else if (res?.ok) {
       return router.push("/app");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -55,7 +62,11 @@ export default function Login() {
           type="submit"
           className="w-full p-2 bg-ctp-blue text-ctp-crust rounded-lg"
         >
-          Login
+          {loading ? (
+            <Loading className="w-8 h-8 mx-auto fill-ctp-green" />
+          ) : (
+            "Login"
+          )}
         </button>
 
         <p className="text-sm text-ctp-subtext0 my-1">
