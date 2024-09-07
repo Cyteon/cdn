@@ -1,9 +1,16 @@
 import { connectDB } from "@/lib/mongodb";
 import User, { UserDocument } from "@/models/User";
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, User as NextAuthUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+
+interface CustomUser extends NextAuthUser {
+  id: string;
+  admin: boolean;
+  username: string;
+  customToken: string;
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -37,7 +44,7 @@ export const authOptions: NextAuthOptions = {
           admin: user.admin,
           username: user.username,
           customToken: customToken,
-        };
+        } as CustomUser;
       },
     }),
   ],
@@ -47,33 +54,31 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        var usr = user as {
-          id: string;
-          admin: boolean;
-          username: string;
-          customToken: string;
-        };
+        const usr = user as CustomUser;
 
         token.id = usr.id;
         token.admin = usr.admin;
         token.username = usr.username;
         token.customToken = usr.customToken;
       }
+
       return token;
     },
+
     async session({ session, token }) {
       await connectDB();
 
       const user = await User.findOne({ id: token.id });
 
-      if (!user) return;
+      if (!user) return session;
 
       session.user = {
         id: token.id,
         admin: user.admin,
         username: user.username,
         customToken: token.customToken,
-      };
+      } as CustomUser;
+
       return session;
     },
   },
