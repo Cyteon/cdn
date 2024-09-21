@@ -15,22 +15,8 @@ export default function Files() {
   const { status, data: session } = useSession();
 
   var [files, setFiles] = useState([]);
-
-  var images = files.filter((file) => {
-    var f = file as FileDocument;
-
-    var ext = f.id.split(".").pop() || "";
-
-    imageExtensions.includes(ext);
-  });
-
-  var other = files.filter((file) => {
-    var f = file as FileDocument;
-
-    var ext = f.id.split(".").pop() || "";
-
-    !imageExtensions.includes(ext);
-  });
+  var [images, setImages] = useState([]);
+  var [other, setOther] = useState([]);
 
   const router = useRouter();
 
@@ -51,7 +37,21 @@ export default function Files() {
 
     console.log(data);
 
+    const images = data.filter((file: FileDocument) => {
+      var ext = file.id.split(".").pop() || "";
+
+      return imageExtensions.includes(ext);
+    });
+
+    var other = data.filter((file: FileDocument) => {
+      var ext = file.id.split(".").pop() || "";
+
+      return !imageExtensions.includes(ext);
+    });
+
     setFiles(data);
+    setImages(images);
+    setOther(other);
   };
 
   useEffect(() => {
