@@ -94,7 +94,7 @@ export default async function Upload({ params }: { params: { slug: string } }) {
             <Image
               src={"/r/" + params.slug}
               alt="image"
-              layout="responsive"
+              className="object-scale-down"
               width={width || 100}
               height={height || 100}
               style={{ maxWidth: "100%", height: "auto" }}
